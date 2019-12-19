@@ -8,19 +8,19 @@ CXXFLAGS    = -Wall
 LIBS        = -Iinc
 DEVICE		= at90can128
 FCPU		= 16000000
-OFILES		= main.o spi_slave.o
+OFILES		= test.o spi_slave.o
 
 #
 # Make
 #===========
 
 main: $(OFILES)
-	$(CXX) $(CXXFLAGS) -mmcu=$(DEVICE) -DF_CPU=$(FCPU) -o bin/$(APPNAME).elf $(OFILES)
+	$(CXX) $(CXXFLAGS) -mmcu=$(DEVICE) -DF_CPU=$(FCPU) -o bin/$(APPNAME) $(OFILES)
 
-main.o: src/main.c
-	$(CXX) $(CXXFLAGS) -mmcu=$(DEVICE) -DF_CPU=$(FCPU) -c src/main.c $(LIBS)
+test.o: src/test.c
+	$(CXX) $(CXXFLAGS) -mmcu=$(DEVICE) -DF_CPU=$(FCPU) -c src/test.c $(LIBS)
 
-spi.o: src/spi_slave.c
+spi_slave.o: src/spi_slave.c
 	$(CXX) $(CXXFLAGS) -mmcu=$(DEVICE) -DF_CPU=$(FCPU) -c src/spi_slave.c $(LIBS)
 
 clean:

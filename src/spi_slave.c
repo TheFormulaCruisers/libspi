@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stddef.h>
 #include <spi_slave.h>
 
 static volatile uint8_t *_txbuffer;

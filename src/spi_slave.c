@@ -4,7 +4,7 @@
 #include <spi_slave.h>
 
 static volatile uint8_t *_txbuffer;
-static volatile uint8_t _txbuflen;
+static volatile uint8_t _txbufend;
 static volatile uint8_t _txbufpos;
 static volatile void (*_txdone_handler)();
 
@@ -15,7 +15,7 @@ void spi_slave_init(void) {
 
 	// Initialize internal variables
 	_txbuffer = NULL;
-	_txbuflen = 0;
+	_txbufend = 0;
 	_txbufpos = 0;
 	_txdone_handler = NULL;
 }
@@ -27,7 +27,7 @@ void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen) {
 
 	// Register the buffer
 	_txbuffer = txbuffer;
-	_txbuflen = txbuflen;
+	_txbufend = txbuflen-1;
 	_txbufpos = 0;
 
 	// Copy first byte to controller
@@ -51,7 +51,7 @@ void spi_slave_enable(void) {
 
 ISR(SPI_STC_vect) {
 
-	if (_txbufpos < _txbuflen-1) {
+	if (_txbufpos < _txbufend) {
 
 		// Increment buffer position
 		_txbufpos++;

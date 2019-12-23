@@ -14,7 +14,7 @@ void spi_slave_init(void);
  * @param txbuflen
  * @return void
  */
-void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t *txbuflen);
+void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen);
 
 /**
  * @brief Register the transmission done handler.

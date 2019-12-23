@@ -4,23 +4,23 @@
 #include <spi_slave.h>
 
 static volatile uint8_t *_txbuffer;
-static volatile uint8_t *_txbuflen;
+static volatile uint8_t _txbuflen;
 static volatile uint8_t _txbufpos;
 static volatile void (*_txdone_handler)();
 
 void spi_slave_init(void) {
 
-	// Set initial tx data
+	// Initialize tx data
 	SPDR = 0xFF;
 
-	// Set initial internal variables
+	// Initialize internal variables
 	_txbuffer = NULL;
-	_txbuflen = NULL;
+	_txbuflen = 0;
 	_txbufpos = 0;
 	_txdone_handler = NULL;
 }
 
-void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t *txbuflen) {
+void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen) {
 
 	// Disable interrupts
 	SPCR &= ~_BV(SPIE);
@@ -51,7 +51,7 @@ void spi_slave_enable(void) {
 
 ISR(SPI_STC_vect) {
 
-	if (_txbufpos < (*_txbuflen)-1) {
+	if (_txbufpos < _txbuflen-1) {
 
 		// Increment buffer position
 		_txbufpos++;

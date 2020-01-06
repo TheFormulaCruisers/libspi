@@ -6,9 +6,13 @@
 static volatile uint8_t *_txbuffer;
 static volatile uint8_t _txbufend;
 static volatile uint8_t _txbufpos;
+static volatile void (*_txstart_handler)();
 static volatile void (*_txdone_handler)();
 
 void spi_slave_init(void) {
+
+	// Disable SPI controller
+	SPCR = 0x00;
 
 	// Initialize tx data
 	SPDR = 0xFF;
@@ -32,6 +36,21 @@ void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen) {
 
 	// Copy first byte to controller
 	SPDR = *_txbuffer;
+	
+	// Enable interrupts
+	SPCR |= _BV(SPIE);
+}
+
+void spi_slave_register_txstart_handler(void (*txstart_handler)()) {
+
+	// Disable interrupts
+	SPCR &= ~_BV(SPIE);
+
+	// Register the handler
+	_txstart_handler = txstart_handler;
+	
+	// Enable interrupts
+	SPCR |= _BV(SPIE);
 }
 
 void spi_slave_register_txdone_handler(void (*txdone_handler)()) {
@@ -41,17 +60,25 @@ void spi_slave_register_txdone_handler(void (*txdone_handler)()) {
 
 	// Register the handler
 	_txdone_handler = txdone_handler;
+	
+	// Enable interrupts
+	SPCR |= _BV(SPIE);
 }
 
 void spi_slave_enable(void) {
 
-	// Enable interrupts and controller
-	SPCR = _BV(SPIE) | _BV(SPE);
+	// Enable controller
+	SPCR |= _BV(SPE);
 }
 
 ISR(SPI_STC_vect) {
 
 	if (_txbufpos < _txbufend) {
+
+		// Call tx start handler
+		if (_txstart_handler != NULL) {
+			(*_txstart_handler)();
+		}
 
 		// Increment buffer position
 		_txbufpos++;
@@ -69,6 +96,6 @@ ISR(SPI_STC_vect) {
 
 	// Copy next byte from tx buffer to controller
 	if (_txbuffer != NULL) {	
-		SPDR = (*_txbuffer+_txbufpos);
+		SPDR = *(_txbuffer+_txbufpos);
 	}
 }

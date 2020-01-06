@@ -17,6 +17,19 @@ void spi_slave_init(void);
 void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen);
 
 /**
+ * @brief Register the transmission start handler.
+ * @param txstart_handler
+ * @return void
+ *
+ * Start of transmission is detected after the first byte transferred.
+ * In other words, the first byte of the then registered txbuffer will be
+ * transmitted before calling this handler. If it will be used for registering
+ * a new txbuffer at the start of a new transmission, this effect should be
+ * taken into consideration.
+ */
+void spi_slave_register_txstart_handler(void (*txstart_handler)());
+
+/**
  * @brief Register the transmission done handler.
  * @param txdone_handler
  * @return void

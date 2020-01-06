@@ -73,12 +73,15 @@ void spi_slave_enable(void) {
 
 ISR(SPI_STC_vect) {
 
-	if (_txbufpos < _txbufend) {
-
+	if (_txbufpos == 0) {
+		
 		// Call tx start handler
 		if (_txstart_handler != NULL) {
 			(*_txstart_handler)();
 		}
+	}
+
+	if (_txbufpos < _txbufend) {
 
 		// Increment buffer position
 		_txbufpos++;

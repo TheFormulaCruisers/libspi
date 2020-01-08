@@ -1,6 +1,9 @@
 #ifndef _SPI_SLAVE_H
 #define _SPI_SLAVE_H
 
+#define SPI_DDR DDRB
+#define SPI_MISO PB3
+
 /**
  * @brief Initialize the SPI controller.
  * @param void

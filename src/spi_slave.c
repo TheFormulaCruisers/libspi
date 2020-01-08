@@ -14,6 +14,9 @@ void spi_slave_init(void) {
 	// Disable SPI controller
 	SPCR = 0x00;
 
+	// Configure SPI pins
+	SPI_DDR = _BV(SPI_MISO);
+
 	// Initialize tx data
 	SPDR = 0xFF;
 

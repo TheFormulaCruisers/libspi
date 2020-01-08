@@ -1,9 +1,6 @@
 #ifndef _SPI_SLAVE_H
 #define _SPI_SLAVE_H
 
-#define SPI_DDR DDRB
-#define SPI_MISO PB3
-
 /**
  * @brief Initialize the SPI controller.
  * @param void
@@ -26,9 +23,9 @@ void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen);
  *
  * Start of transmission is detected after the first byte transferred.
  * In other words, the first byte of the then registered txbuffer will be
- * transmitted before calling this handler. If it will be used for registering
- * a new txbuffer at the start of a new transmission, this effect should be
- * taken into consideration.
+ * transmitted before calling this handler. If this function will be used for
+ * registering a new txbuffer at the start of a new transmission, this effect
+ * should be taken into consideration.
  */
 void spi_slave_register_txstart_handler(void (*txstart_handler)());
 

@@ -8,10 +8,10 @@ volatile uint8_t current_buffer;
 
 void spi_swap_buffer() {
 	if (current_buffer == 1) {
-		spi_slave_register_txbuffer(dat2, 8);
+		spi_slave_register_txbuffer((void *)dat2, 8);
 		current_buffer = 2;
 	} else {
-		spi_slave_register_txbuffer(dat1, 8);
+		spi_slave_register_txbuffer((void *)dat1, 8);
 		current_buffer = 1;
 	}
 }
@@ -19,7 +19,7 @@ void spi_swap_buffer() {
 int main(void) {
 
 	spi_slave_init();
-	spi_slave_register_txbuffer(dat1, 8);
+	spi_slave_register_txbuffer((void *)dat1, 8);
 	spi_slave_register_txdone_handler(spi_swap_buffer);
 	spi_slave_enable();
 	

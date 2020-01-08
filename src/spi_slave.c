@@ -3,6 +3,9 @@
 #include <stddef.h>
 #include <spi_slave.h>
 
+#define SPI_DDR DDRB
+#define PIN_MISO PB3
+
 static volatile uint8_t *_txbuffer;
 static volatile uint8_t _txbufend;
 static volatile uint8_t _txbufpos;
@@ -15,7 +18,7 @@ void spi_slave_init(void) {
 	SPCR = 0x00;
 
 	// Configure SPI pins
-	SPI_DDR = _BV(SPI_MISO);
+	SPI_DDR = _BV(PIN_MISO);
 
 	// Initialize tx data
 	SPDR = 0xFF;

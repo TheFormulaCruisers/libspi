@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <spi_slave.h>
 
-// ------------------------------------------------------------------ Defitions
+// ---------------------------------------------------------------- Definitions
 
 #define SPI_DDR DDRB
 #define PIN_MISO PB3

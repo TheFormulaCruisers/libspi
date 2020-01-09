@@ -3,14 +3,20 @@
 #include <stddef.h>
 #include <spi_slave.h>
 
+// ------------------------------------------------------------------ Defitions
+
 #define SPI_DDR DDRB
 #define PIN_MISO PB3
+
+// --------------------------------------------------------------------- Memory
 
 static volatile uint8_t *_txbuffer;
 static volatile uint8_t _txbufend;
 static volatile uint8_t _txbufpos;
 static volatile void (*_txstart_handler)();
 static volatile void (*_txdone_handler)();
+
+// --------------------------------------------------------- External Functions
 
 void spi_slave_init(void) {
 
@@ -76,6 +82,8 @@ void spi_slave_enable(void) {
 	// Enable controller
 	SPCR |= _BV(SPE);
 }
+
+// ------------------------------------------------- Interrupt Service Routines
 
 ISR(SPI_STC_vect) {
 

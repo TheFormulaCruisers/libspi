@@ -21,7 +21,6 @@ int main(void) {
 	spi_slave_init();
 	spi_slave_register_txbuffer((void *)dat1, 8);
 	spi_slave_register_txdone_handler(spi_swap_buffer);
-	spi_slave_enable();
 	
 	sei();
 

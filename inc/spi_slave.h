@@ -2,7 +2,7 @@
 #define _SPI_SLAVE_H
 
 /**
- * @brief Initialize the SPI controller.
+ * @brief Initialize and enable the SPI controller.
  * @param void
  * @return void
  */
@@ -35,12 +35,5 @@ void spi_slave_register_txstart_handler(void (*txstart_handler)());
  * @return void
  */
 void spi_slave_register_txdone_handler(void (*txdone_handler)());
-
-/**
- * @brief Enable the SPI controller.
- * @param void
- * @return void
- */
-void spi_slave_enable(void);
 
 #endif // _SPI_SLAVE_H

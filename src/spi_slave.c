@@ -20,9 +20,6 @@ static volatile void (*_txdone_handler)();
 
 void spi_slave_init(void) {
 
-	// Disable SPI controller
-	SPCR = 0x00;
-
 	// Configure SPI pins
 	SPI_DDR = _BV(PIN_MISO);
 
@@ -34,12 +31,12 @@ void spi_slave_init(void) {
 	_txbufend = 0;
 	_txbufpos = 0;
 	_txdone_handler = NULL;
+
+	// Enable controller and interrupts
+	SPCR = _BV(SPE) | _BV(SPIE);
 }
 
 void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen) {
-
-	// Disable interrupts
-	SPCR &= ~_BV(SPIE);
 
 	// Register the buffer
 	_txbuffer = txbuffer;
@@ -48,39 +45,18 @@ void spi_slave_register_txbuffer(uint8_t *txbuffer, uint8_t txbuflen) {
 
 	// Copy first byte to controller
 	SPDR = *_txbuffer;
-	
-	// Enable interrupts
-	SPCR |= _BV(SPIE);
 }
 
 void spi_slave_register_txstart_handler(void (*txstart_handler)()) {
 
-	// Disable interrupts
-	SPCR &= ~_BV(SPIE);
-
-	// Register the handler
+	// Register handler
 	_txstart_handler = txstart_handler;
-	
-	// Enable interrupts
-	SPCR |= _BV(SPIE);
 }
 
 void spi_slave_register_txdone_handler(void (*txdone_handler)()) {
 
-	// Disable interrupts
-	SPCR &= ~_BV(SPIE);
-
 	// Register the handler
 	_txdone_handler = txdone_handler;
-	
-	// Enable interrupts
-	SPCR |= _BV(SPIE);
-}
-
-void spi_slave_enable(void) {
-
-	// Enable controller
-	SPCR |= _BV(SPE);
 }
 
 // ------------------------------------------------- Interrupt Service Routines

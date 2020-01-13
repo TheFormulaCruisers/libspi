@@ -55,7 +55,7 @@ void spi_slave_register_txstart_handler(void (*txstart_handler)()) {
 
 void spi_slave_register_txdone_handler(void (*txdone_handler)()) {
 
-	// Register the handler
+	// Register handler
 	_txdone_handler = txdone_handler;
 }
 
